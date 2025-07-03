@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from flask_cors import CORS, cross_origin
 import os
+from dotenv import load_dotenv
 
 from services.home_activities import *
 from services.user_activities import *
@@ -13,9 +14,11 @@ from services.messages import *
 from services.create_message import *
 from services.show_activity import *
 
+load_dotenv()
+
 app = Flask(__name__)
-frontend = os.getenv('FRONTEND_URL', '*')
-backend = os.getenv('BACKEND_URL', '*')
+frontend = os.getenv('FRONTEND_URL')
+backend = os.getenv('BACKEND_URL')
 origins = [frontend, backend]
 cors = CORS(
   app, 
