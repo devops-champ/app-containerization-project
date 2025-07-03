@@ -43,15 +43,16 @@ Go to your browser and enter localhost:5000/api/activities/home
 
 > 5000/api/activities/home - is the API end-point that shows the data
 
-<img src="images/5000.png" alt="Alt text" width="500"/>
+<img src="images/5000.png" alt="Alt text" width="400"/>
 
-![alt text](images/5000.png)
 
 To run the backend application follow these steps:
 ```
 cd frontend-react-js
-# the below command installs all required packages from package.json
-```
-npm install
+npm install #installs all required packages from package
 npm start
 ```
+
+Tada! localhost:3000 automatically opens in the browser.
+
+<img src="images/3000.png" alt="Alt text" width="500"/>
