@@ -17,9 +17,9 @@ Unlike VMs, containers share the same operating system kernel and isolate the ap
 
 Docker is a tool that packages the software as containers. Inside containers, the app will have it's frameworks, libraries, dependenices, and runtime enivronments.
 
-### Understand the Application Stack
+### Understand the Ephermeral Micro-Blogging Application Stack
 
-The application which we are going to containrize is a micro-blogging platform application (ephemeral in nature) that allows users to post updates that automatically expire after a period of time. It has the following stack:
+The application which we are going to containrize is a micro-blogging platform application (ephemeral in nature) that allows users to post updates that automatically expire after a period of time. The application has the following stack:
 
 - Frontend - React
 - Backend - Flask
@@ -28,7 +28,9 @@ The application which we are going to containrize is a micro-blogging platform a
 
 ### Running the application locally
 
-After having the application stack understanding, it's time to run the app locally (without database). By running the app locally we will understand the application building steps which we help us to simulate the same steps when contaierizing the application.
+After having the application stack understanding, it's time to run the app locally (without database). By running the app locally we will understand the application building steps which we help us to simulate the same steps when contanierizing the application.
+
+First things first, you must create a `.env` file under the root of backend-flask and frontend-react-js folders. What needs to go inside `.env` file ? refer to `.env.example` file and add the same variables.
 
 To run the backend application follow these steps:
 ```
@@ -40,6 +42,10 @@ Go to your browser and enter localhost:5000/api/activities/home
 > port **5000** is the default port on which Flask runs
 
 > 5000/api/activities/home - is the API end-point that shows the data
+
+<img src="images/5000.png" alt="Alt text" width="500"/>
+
+![alt text](images/5000.png)
 
 To run the backend application follow these steps:
 ```
