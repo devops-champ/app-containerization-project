@@ -46,7 +46,7 @@ Go to your browser and enter localhost:5000/api/activities/home
 <img src="images/5000.png" alt="Alt text" width="400"/>
 
 
-To run the backend application follow these steps:
+To run the frontend application follow these steps:
 ```
 cd frontend-react-js
 npm install #installs all required packages from package
@@ -56,3 +56,6 @@ npm start
 Tada! localhost:3000 automatically opens in the browser.
 
 <img src="images/3000.png" alt="Alt text" width="500"/>
+
+
+If you're able to run the backend and frontend successfully, now we can go ahead and try to Dockerize the application.
