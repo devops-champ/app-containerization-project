@@ -54,9 +54,13 @@ jobs:
         run: snyk container test backend-image --file=backend-flask/Dockerfile || true
 
       - name: Snyk Container SARIF output (backend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}      
         run: snyk container test backend-image --file=backend-flask/Dockerfile --sarif-file-output=container-backend.sarif || true
 
       - name: Upload Snyk Container SARIF to GitHub Code Scanning
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}      
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: container-backend.sarif
@@ -74,9 +78,13 @@ jobs:
         run: snyk container test frontend-image --file=frontend-react-js/Dockerfile || true
 
       - name: Snyk Container SARIF output (frontend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: snyk container test frontend-image --file=frontend-react-js/Dockerfile --sarif-file-output=container-frontend.sarif || true
 
       - name: Upload Snyk Container SARIF to GitHub Code Scanning (frontend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: container-frontend.sarif
