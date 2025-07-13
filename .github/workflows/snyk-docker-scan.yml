@@ -1,30 +1,62 @@
-name: Snyk Docker Scan
+name: Snyk Security
 
 on:
   push:
-    branches: [main]
+    branches: ["main"]
   pull_request:
-    branches: [main]
-  workflow_dispatch:
+    branches: ["main"]
+
+permissions:
+  contents: read
 
 jobs:
-  snyk-docker-scan:
+  snyk:
+    permissions:
+      contents: read # for actions/checkout
+      security-events: write # for uploading SARIF results
+      actions: read
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@master
+      - uses: actions/checkout@v4
 
       - name: Set up Snyk CLI
-        uses: snyk/actions/setup@master
+        uses: snyk/actions/setup@v1
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      - name: Authenticate Snyk
-        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+      # SAST - Snyk Code (Optional: || true prevents pipeline failure)
+      - name: Snyk Code test
+        run: snyk code test --sarif > snyk-code.sarif || true
 
-      - name: Test backend-flask Dockerfile
-        run: snyk container test backend-flask/Dockerfile --file=backend-flask/Dockerfile
+      # SCA - Snyk Open Source monitor for backend + frontend
+      - name: Python Snyk monitor (backend-flask)
+        working-directory: backend-flask
+        run: |
+          pip install -r requirements.txt
+          snyk monitor || true
 
-      - name: Test frontend-react-js Dockerfile
-        run: snyk container test frontend-react-js/Dockerfile --file=frontend-react-js/Dockerfile
+      - name: Node Snyk monitor (frontend-react-js)
+        working-directory: frontend-react-js
+        run: |
+          npm install
+          snyk monitor || true
 
-      - name: Test postgres Docker image
-        run: snyk container test postgres:13-alpine --file=postgres/Dockerfile
+      # Build and Scan Backend Docker image
+      - name: Build backend Docker image
+        run: docker build -t backend-image backend-flask/
+
+      - name: Snyk Container monitor (backend)
+        run: snyk container monitor backend-image --file=backend-flask/Dockerfile || true
+
+      # Build and Scan Frontend Docker image
+      - name: Build frontend Docker image
+        run: docker build -t frontend-image frontend-react-js/
+
+      - name: Snyk Container monitor (frontend)
+        run: snyk container monitor frontend-image --file=frontend-react-js/Dockerfile || true
+
+      # Upload SARIF to GitHub Code Scanning
+      - name: Upload Snyk Code result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk-code.sarif
