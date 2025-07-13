@@ -17,10 +17,10 @@ jobs:
       actions: read
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@master
 
       - name: Set up Snyk CLI
-        uses: snyk/actions/setup@v1
+        uses: snyk/actions/setup@v1master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
