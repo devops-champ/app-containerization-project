@@ -54,4 +54,32 @@ jobs:
         with:
           sarif_file: container-backend.sarif
 
+      # Build and Scan Frontend Docker image
+      - name: Build frontend Docker image
+        run: docker build -t frontend-image frontend-react-js/
+
+      - name: Snyk Container test (frontend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk container test frontend-image --file=frontend-react-js/Dockerfile --severity-threshold=high || true
+
+      - name: Snyk Container SARIF output (frontend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}      
+        run: |
+          snyk container test frontend-image \
+            --file=frontend-react-js/Dockerfile \
+            --severity-threshold=high \
+            --severity=low=3.0,medium=6.0,high=8.0 \
+            --sarif-file-output=container-frontend.sarif || true
+
+      - name: Upload Snyk Container SARIF to GitHub Code Scanning
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}      
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: container-frontend.sarif
+
+
+
 
