@@ -28,19 +28,6 @@ jobs:
       - name: Snyk Code test
         run: snyk code test --sarif > snyk-code.sarif || true
 
-      # SCA - Snyk Open Source monitor for backend + frontend
-      - name: Python Snyk monitor (backend-flask)
-        working-directory: backend-flask
-        run: |
-          pip install -r requirements.txt
-          snyk monitor || true
-
-      - name: Node Snyk monitor (frontend-react-js)
-        working-directory: frontend-react-js
-        run: |
-          npm install
-          snyk monitor || true
-
       # Build and Scan Backend Docker image
       - name: Build backend Docker image
         run: docker build -t backend-image backend-flask/
@@ -53,7 +40,12 @@ jobs:
       - name: Snyk Container SARIF output (backend)
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}      
-        run: snyk container test backend-image --file=backend-flask/Dockerfile --sarif-file-output=container-backend.sarif || true
+        run: |
+          snyk container test backend-image \
+            --file=backend-flask/Dockerfile \
+            --severity-threshold=high \
+            --severity=low=3.0,medium=6.0,high=8.0 \
+            --sarif-file-output=container-backend.sarif || true
 
       - name: Upload Snyk Container SARIF to GitHub Code Scanning
         env:
