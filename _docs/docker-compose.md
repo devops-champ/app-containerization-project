@@ -102,7 +102,10 @@ To connect to the postgres database:
 ```
 $ psql -h localhost -p 5436 -U postgres
 ```
-
+To check the status to the DynamoDB database:
+```
+$ aws dynamodb list-tables --endpoint-url http://localhost:8000
+```
 
 
 
