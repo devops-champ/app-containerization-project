@@ -48,6 +48,17 @@ jobs:
       - name: Snyk Container monitor (backend)
         run: snyk container monitor backend-image --file=backend-flask/Dockerfile || true
 
+      - name: Snyk Container test (backend)
+        run: snyk container test backend-image --file=backend-flask/Dockerfile
+
+      - name: Snyk Container SARIF output (backend)
+        run: snyk container test backend-image --file=backend-flask/Dockerfile --sarif-file-output=container-backend.sarif || true
+
+      - name: Upload Snyk Container SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: container-backend.sarif
+
       # Build and Scan Frontend Docker image
       - name: Build frontend Docker image
         run: docker build -t frontend-image frontend-react-js/
@@ -55,8 +66,13 @@ jobs:
       - name: Snyk Container monitor (frontend)
         run: snyk container monitor frontend-image --file=frontend-react-js/Dockerfile || true
 
-      # # Upload SARIF to GitHub Code Scanning
-      # - name: Upload Snyk Code result to GitHub Code Scanning
-      #   uses: github/codeql-action/upload-sarif@v3
-      #   with:
-      #     sarif_file: snyk-code.sarif
+      - name: Snyk Container test (frontend)
+        run: snyk container test frontend-image --file=frontend-react-js/Dockerfile
+
+      - name: Snyk Container SARIF output (frontend)
+        run: snyk container test frontend-image --file=frontend-react-js/Dockerfile --sarif-file-output=container-frontend.sarif || true
+
+      - name: Upload Snyk Container SARIF to GitHub Code Scanning (frontend)
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: container-frontend.sarif
