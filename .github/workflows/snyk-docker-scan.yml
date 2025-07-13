@@ -49,6 +49,8 @@ jobs:
         run: snyk container monitor backend-image --file=backend-flask/Dockerfile || true
 
       - name: Snyk Container test (backend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: snyk container test backend-image --file=backend-flask/Dockerfile
 
       - name: Snyk Container SARIF output (backend)
@@ -67,6 +69,8 @@ jobs:
         run: snyk container monitor frontend-image --file=frontend-react-js/Dockerfile || true
 
       - name: Snyk Container test (frontend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}      
         run: snyk container test frontend-image --file=frontend-react-js/Dockerfile
 
       - name: Snyk Container SARIF output (frontend)
