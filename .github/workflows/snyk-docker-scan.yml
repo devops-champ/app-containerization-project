@@ -53,6 +53,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: container-backend.sarif
+          category: "snyk-container-backend"
 
       # Build and Scan Frontend Docker image
       - name: Build frontend Docker image
@@ -79,6 +80,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: container-frontend.sarif
+          category: "snyk-container-frontend"
 
 
 
