@@ -1,6 +1,6 @@
 ## Container Security Best Practices
 
-1. Image Vulnerability Scanning
+### Image Vulnerability Scanning
 
 Image Vulnerability Scanning is the process of inspecting Docker container images to detect known security vulnerabilities (CVEs — Common Vulnerabilities and Exposures) in:
 
@@ -34,37 +34,103 @@ In this project let us intergrate the popular well known container image scanner
 
 9. Add the following snyk configuration in snyk-docker-scan.yml:
 ```
-name: Snyk Docker Scan
+name: Snyk Security
 
 on:
   push:
-    branches: [main]
+    branches: ["main"]
   pull_request:
-    branches: [main]
-  workflow_dispatch:
+    branches: ["main"]
+
+permissions:
+  contents: read
 
 jobs:
-  snyk-docker-scan:
+  snyk:
+    permissions:
+      contents: read # for actions/checkout
+      security-events: write # for uploading SARIF results
+      actions: read
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@master
 
       - name: Set up Snyk CLI
-        uses: snyk/actions/setup@v3
+        uses: snyk/actions/setup@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      - name: Authenticate Snyk
-        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+      # SAST - Snyk Code (Optional: || true prevents pipeline failure)
+      - name: Snyk Code test
+        run: snyk code test --sarif > snyk-code.sarif || true
 
-      - name: Test backend-flask Dockerfile
-        run: snyk container test backend-flask/Dockerfile --file=backend-flask/Dockerfile
+      # Build and Scan Backend Docker image
+      - name: Build backend Docker image
+        run: docker build -t backend-image backend-flask/
 
-      - name: Test frontend-react-js Dockerfile
-        run: snyk container test frontend-react-js/Dockerfile --file=frontend-react-js/Dockerfile
+      - name: Snyk Container test (backend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk container test backend-image --file=backend-flask/Dockerfile --severity-threshold=high || true
+
+      - name: Snyk Container SARIF output (backend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}      
+        run: |
+          snyk container test backend-image \
+            --file=backend-flask/Dockerfile \
+            --severity-threshold=high \
+            --severity=low=3.0,medium=6.0,high=8.0 \
+            --sarif-file-output=container-backend.sarif || true
+
+      - name: Upload Snyk Container SARIF to GitHub Code Scanning
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}      
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: container-backend.sarif
+          category: "snyk-container-backend"
+
+      # Build and Scan Frontend Docker image
+      - name: Build frontend Docker image
+        run: docker build -t frontend-image frontend-react-js/
+
+      - name: Snyk Container test (frontend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk container test frontend-image --file=frontend-react-js/Dockerfile --severity-threshold=high || true
+
+      - name: Snyk Container SARIF output (frontend)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}      
+        run: |
+          snyk container test frontend-image \
+            --file=frontend-react-js/Dockerfile \
+            --severity-threshold=high \
+            --severity=low=3.0,medium=6.0,high=8.0 \
+            --sarif-file-output=container-frontend.sarif || true
+
+      - name: Upload Snyk Container SARIF to GitHub Code Scanning
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}      
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: container-frontend.sarif
+          category: "snyk-container-frontend"
 ```
 
 
 
+### No Sensitive Data in Docker Files or Images
+
+Never hardcode secrets, passwords, or API keys in Dockerfiles, environment variables, or baked into images.
 
 
+### Read-Only File System and Volume for Docker
 
+Set the file system of containers as read-only wherever possible to reduce tampering risk.
+
+
+### Non-Root User Mode
+
+Avoid running containers (and Docker daemon where possible) as root to limit damage if compromised.
