@@ -8,7 +8,7 @@ Docker Compose is a tool that let's you run multiple containers using a declarti
 In a single `.yml` file you can define multiple containers. This approach makes the development, deployment, and management of containerized application.
 
 ## Let's write Docker Compose File for Dev Environment
-Usually as a best pratice, seperate docker-compose files are created for dev and prod. It's not a must do. But it keeps the dev and prod requirements seperate.
+Usually as a best pratice, seperate docker-compose files are created for dev and prod. It's not a must do. But it keeps the dev and prod requirements seperate. The goal here is to create a docker-compose file for dev environemnt. In the later stages, once we need to push to prod, we will create docker-compose.prod.yml.
 
 `docker-compose.dev.yml`
 
