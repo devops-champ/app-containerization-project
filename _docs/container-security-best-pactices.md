@@ -1,5 +1,7 @@
 ## Container Security Best Practices
 
+Security is an essential part of any containerized application workflow. Below are some best practices to ensure your images are secure, starting with automated scanning using Snyk.
+
 ### Image Vulnerability Scanning
 
 Image Vulnerability Scanning is the process of inspecting Docker container images to detect known security vulnerabilities (CVEs — Common Vulnerabilities and Exposures) in:
@@ -12,7 +14,7 @@ Image Vulnerability Scanning is the process of inspecting Docker container image
 
 - System tools included in the image
 
-In this project let us intergrate the popular well known container image scanner tool called `Snyk' using Github actions.
+In this project, we'll integrate Snyk, a popular container security scanner, using GitHub Actions.
 
 1. Create an account at [snyk.io](https://snyk.io).
 
@@ -118,8 +120,6 @@ jobs:
           sarif_file: container-frontend.sarif
           category: "snyk-container-frontend"
 ```
-
-
 
 ### No Sensitive Data in Docker Files or Images
 

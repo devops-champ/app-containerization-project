@@ -1,14 +1,14 @@
 ## Docker Compose
 
-Previously, we ran frontend and backend as an indivual containers. But this method is not scalable. In production deployments, we might have to run more than 2 containers. So managing indivual contianers becomes difficult. To address these issues, `docker-compose` comes to the resue.
+Previously, we ran frontend and backend as an indivual containers. But this method is not scalable. In real-world deployments, we often run multiple services—databases, caches, APIs—all together. So managing indivual contianers becomes difficult. To address these issues, `docker-compose` comes to the resue.
 
 ## What is Docker Compose
 
 Docker Compose is a tool that let's you run multiple containers using a declartive approach in `.yml` format.
-In a single `.yml` file you can define multiple containers. This approach makes the development, deployment, and management of containerized application.
+In a single `.yml` file you can define your entire app stack including app containers, databases, volumes, and networks. This approach makes the development, deployment, and management of containerized application.
 
 ## Let's write Docker Compose File for Dev Environment
-Usually as a best pratice, seperate docker-compose files are created for dev and prod. It's not a must do. But it keeps the dev and prod requirements seperate. The goal here is to create a docker-compose file for dev environemnt. In the later stages, once we need to push to prod, we will create docker-compose.prod.yml.
+As a best pratice,  it's common to create separate Compose files for development and production. It's not a must do. But it keeps the dev and prod requirements seperate. The goal here is to create a docker-compose file for dev environemnt. In the later stages, once we need to push to prod, we will create `docker-compose.prod.yml`.
 
 `docker-compose.dev.yml`
 
@@ -42,6 +42,7 @@ services:
       - post:/var/lib/postgresql/data
 
   dynamodb-local:
+    user: root
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
     image: "amazon/dynamodb-local:latest"
     container_name: dynamodb-local
@@ -49,20 +50,20 @@ services:
       - "8000:8000"
     volumes:
       - "./docker/dynamodb:/home/dynamodblocal/data"
-    working_dir: /home/dynamodblocal        
+    working_dir: /home/dynamodblocal      
 
 volumes:
   post:
-    driver: local      
+    driver: local     
 ``` 
 
 Let's understand the parameters of `docker-compose.yml` file:
-- services - under services you can define multiple containers. Every docker-compose file starts with services
-- env _file - reference the .env file of your application
-- build - reference the Dockerfile path
-- ports - map host port with container port. It has {host_port}:{container_port} format
-- volumes (under `post` service level) - there are several falvours of volumes in docker. I will describe it in a seperate section.
--Volumes (under root level) - defines which named volumes exist in your Docker environment. Without it, Docker Compose wouldn’t know pgdata is a named volume
+- `services` - Under services you can define multiple containers. Every docker-compose file starts with services.
+- `env _file` - Reference the .env file of your application.
+- `build` - Points to the directory containing each service's Dockerfile.
+- `ports` - Map host port with container port. It has {host_port}:{container_port} format
+- `volumes` (under services level) - There are several falvours of volumes in docker. I will describe it in a seperate section.
+- `volumes` (under root level) - Defines which named volumes exist in your Docker environment. Without it, Docker Compose wouldn’t know pgdata is a named volume.
 
 ## Docker Volumes
 
@@ -108,7 +109,17 @@ $ aws dynamodb list-tables --endpoint-url http://localhost:8000
 ```
 
 
+We now have a development-ready docker-compose.dev.yml that spins up:
 
+- Flask backend
+
+- React frontend
+
+- PostgreSQL
+
+- Local DynamoDB
+
+Volumes ensure persistence and live-reload during development.
 
 
 

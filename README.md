@@ -1,30 +1,34 @@
-# App Containerization Project
+# App Containerization Project Scope
 
-This project will demonstrate on how to Dockerize the ephermeral micro-blogging application.
-I will be documenting the steps I followed and concepts of Docker.
+The scope of this project is to demonstrate containerization skills by creating Dockerfiles for the development environment. It includes containerizing an ephemeral micro-blogging application and setting up a `docker-compose.dev.yml` file that can be used by both developers and DevOps engineers to run the application stack locally.
 
-
-### What is Containerization Technology? Why someone must use it?
-
-Containers came into existence because of the classic well known issue "it works in my system". As a developer when you're bulding applications you might have set of frameworks, libraries, dependenices, and runtime enivronments configured into your system. Similarly the stage and prod environments might have standard environments configured. When you deploy your code into stage or prod and there's a mismatch with the configuration, then the application might thrown an error. Contianers addressed these problems by providing portability.
-
-
-### How different continers are from VMs
-
-Unlike VMs, containers share the same operating system kernel and isolate the application processes from the rest of the system so the whole thing can be migrated, opened, and used across development, testing, and production configurations. 
-
-### What is Docker? How's it realted to containers?
-
-Docker is a tool that packages the software as containers. Inside containers, the app will have it's frameworks, libraries, dependenices, and runtime enivronments.
+I will be documenting the steps I followed and core Docker concepts along the way.
 
 ### Understand the Ephermeral Micro-Blogging Application Stack
 
-The application which we are going to containrize is a micro-blogging platform application (ephemeral in nature) that allows users to post updates that automatically expire after a period of time. The application has the following stack:
+The application which we are going to containerize is a micro-blogging platform application (ephemeral in nature) that allows users to post updates that automatically expire after a period of time. The application has the following stack:
 
 - Frontend - React
 - Backend - Flask
-- Feed Conversations - Postgres
+- Feed Conversations - PostgreSQL
 - Private Messages - DynomoDB
+
+### What is Containerization Technology? Why Someone Must Use It?
+
+Containers came into existence because of the classic well known issue "it works on my machine". As a developer, when you're bulding applications you might have set of frameworks, libraries, dependenices, and runtime enivronments configured into your system. Similarly the stage and prod environments might have standard environments configured. When you deploy your code into stage or production enivronments and if there's a mismatch with the configuration, then the application might break.
+
+Containers solved this issue by offering consistency and portability across all environments. They bundle the app with everything it needs to run, regardless of where it's deployed.
+
+
+### How Are Containers Different From VMs?
+
+Unlike VMs, containers share the same operating system kernel and isolate the application processes from the rest of the system so the whole thing can be migrated, opened, and used across development, testing, and production configurations. 
+
+### What is Docker? How Is It Related to Containers?
+
+Docker is the most widely used container platform. It packages your application and its dependencies into a container image, which can then be run consistently across development, testing, and production.
+
+Inside each Docker container, the app gets its own filesystem, dependencies, and runtime—isolated from the host.
 
 ### Running the application locally
 
@@ -58,9 +62,9 @@ Tada! localhost:3000 automatically opens in the browser.
 <img src="images/3000.png" alt="Alt text" width="500"/>
 
 
-If you're able to run the backend and frontend successfully, now we can go ahead and try to Dockerize the application.
+If you're able to run the backend and frontend successfully, you're ready to containerize the application.
 
-Refer to the following links to learn the steps involved in Dockerizing the application:
+Refer to the following links to learn the steps involved in Dockerizing the application and configuring image secuirty scanning:
 
 
 [backend-dockerization](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/backend-docker.md#dockerize-the-backend-framework)
@@ -70,3 +74,6 @@ Refer to the following links to learn the steps involved in Dockerizing the appl
 [docker-compose](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/docker-compose.md#docker-compose)
 
 [Container Security Best Practices](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/container-security-best-pactices.md#container-security-best-practices)
+
+
+**CREDITS** - Source code belongs to AWS Bootcamp by Andrew Brown.
