@@ -76,4 +76,4 @@ Refer to the following links to learn the steps involved in Dockerizing the appl
 [Container Security Best Practices](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/container-security-best-pactices.md#container-security-best-practices)
 
 
-**CREDITS** - Source code belongs to AWS Bootcamp by Andrew Brown.
+**CREDITS** - Source code of this project belongs to AWS Bootcamp by Andrew Brown.
