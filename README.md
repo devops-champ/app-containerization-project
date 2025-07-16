@@ -67,13 +67,13 @@ If you're able to run the backend and frontend successfully, you're ready to con
 Refer to the following links to learn the steps involved in Dockerizing the application and configuring image secuirty scanning:
 
 
-[backend-dockerization](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/backend-docker.md#dockerize-the-backend-framework)
+[Backend-dockerization](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/backend-docker.md#dockerize-the-backend-framework)
 
-[frontend-dockerization](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/frontend-docker.md#dockerize-the-frontend-framework)
+[Frontend-dockerization](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/frontend-docker.md#dockerize-the-frontend-framework)
 
-[docker-compose](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/docker-compose.md#docker-compose)
+[Docker-compose](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/docker-compose.md#docker-compose)
 
-[container Security Best Practices](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/container-security-best-pactices.md#container-security-best-practices)
+[Container security best practices](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/container-security-best-pactices.md#container-security-best-practices)
 
 
 **CREDITS** - The source code of this project belongs to AWS Bootcamp by Andrew Brown.
