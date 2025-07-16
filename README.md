@@ -73,7 +73,7 @@ Refer to the following links to learn the steps involved in Dockerizing the appl
 
 [docker-compose](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/docker-compose.md#docker-compose)
 
-[Container Security Best Practices](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/container-security-best-pactices.md#container-security-best-practices)
+[container Security Best Practices](https://github.com/devops-champ/app-containerization-project/blob/main/_docs/container-security-best-pactices.md#container-security-best-practices)
 
 
 **CREDITS** - The source code of this project belongs to AWS Bootcamp by Andrew Brown.
